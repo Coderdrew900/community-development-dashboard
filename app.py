@@ -296,6 +296,10 @@ with trend_col:
     st.plotly_chart(trend_fig, width="stretch", config={"displaylogo": False})
 
 with relationship_col:
+    st.caption(
+        "How to read this chart: farther right = higher poverty; higher up = higher unemployment; "
+        "larger bubbles = more households without internet; warmer colors = higher overall priority score."
+    )
     relationship_fig = px.scatter(
         year_data,
         x=poverty_col,
@@ -308,14 +312,22 @@ with relationship_col:
         labels={
             poverty_col: "Poverty rate (%)",
             "unemployment_rate": "Unemployment rate (%)",
-            "no_internet_rate": "No internet (%)",
-            priority_col: "Priority score",
+            "no_internet_rate": "Households without internet (%)",
+            priority_col: "Priority score (0-100)",
         },
     )
-    relationship_fig.update_traces(marker=dict(line=dict(color="white", width=1)), hovertemplate="<b>%{hovertext}</b><br>Poverty: %{x:.1f}%<br>Unemployment: %{y:.1f}%<br>No internet: %{marker.size:.1f}%<extra></extra>")
+    relationship_fig.update_traces(
+        marker=dict(line=dict(color="white", width=1)),
+        hovertemplate=(
+            "<b>%{hovertext}</b><br>"
+            "Poverty: %{x:.1f}%<br>"
+            "Unemployment: %{y:.1f}%<br>"
+            "Households without internet: %{marker.size:.1f}%<extra></extra>"
+        ),
+    )
     relationship_fig.update_xaxes(showgrid=True, gridcolor="#E8EDF2")
     relationship_fig.update_yaxes(showgrid=True, gridcolor="#E8EDF2")
-    base_layout(relationship_fig, "How economic and digital needs overlap", 400)
+    base_layout(relationship_fig, "Economic and digital need: poverty, unemployment, and internet access", 400)
     st.plotly_chart(relationship_fig, width="stretch", config={"displaylogo": False})
 
 st.subheader("Underlying data")
